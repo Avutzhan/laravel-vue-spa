@@ -2015,7 +2015,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      achievements: [],
+      token: '',
+      message: ''
+    };
+  },
+  methods: {
+    fetchingData: function fetchingData() {
+      var _this = this;
+
+      axios.get("http://127.0.0.1:8000/api/achievements?api_token=".concat(this.token))["catch"](function (error) {
+        _this.message = error.response.data.message;
+        _this.achievements = [];
+      }).then(function (_ref) {
+        var data = _ref.data;
+        _this.achievements = data;
+        _this.message = null;
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -2808,8 +2843,57 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("h1", { staticClass: "font-normal text-3xl leading-none" }, [
-    _vm._v("\n    Typography\n")
+  return _c("div", [
+    _c("h1", { staticClass: "font-normal text-3xl leading-none" }, [
+      _vm._v("\n        Typography\n    ")
+    ]),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.token,
+          expression: "token"
+        }
+      ],
+      attrs: { placeholder: "token" },
+      domProps: { value: _vm.token },
+      on: {
+        keyup: function($event) {
+          if (
+            !$event.type.indexOf("key") &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
+          }
+          return _vm.fetchingData($event)
+        },
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.token = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _vm.message
+      ? _c("p", {
+          staticClass: "text-red",
+          domProps: { textContent: _vm._s(_vm.message) }
+        })
+      : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "ul",
+      _vm._l(_vm.achievements, function(achievement) {
+        return _c("li", {
+          domProps: { textContent: _vm._s(achievement.title) }
+        })
+      }),
+      0
+    )
   ])
 }
 var staticRenderFns = []

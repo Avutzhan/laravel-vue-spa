@@ -23,3 +23,7 @@ Route::get('stats', function () {
      'lessons' => 1300
    ];
 });
+
+Route::get('achievements', function () {
+   return request()->user()->achievements;
+})->middleware('auth:api');
